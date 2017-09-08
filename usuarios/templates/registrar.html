@@ -2,19 +2,33 @@
 {% block body %}
 	
 	<div class="container">
-		<form action="{% url 'registrar' %}" method="POST" class="form-signin">
+		<form action="{% url 'registrar' %}" method="post" class="form-signin">
 			{% csrf_token %}
 
 			<h2 class="form-signin-heading">Crie seu usuário</h2>
 
-			<input type="text" name="email" id="id_email" class="form-control" placeholder="E-mail*" required="required">
-			<input type="text" name="nome" id="id_nome" class="form-control" placeholder="Nome *" required="required">
-			<input type="password" name="senha" id="id_senha" class="form-control" placeholder="Senha *" required="required">
-			<input type="text" name="telefone" id="id_telefone" class="form-control" placeholder="Telefone">
-			<input type="text" name="empresa" id="id_empresa" class="form-control" placeholder="Empresa">
+			<input type="text" name="email" id="id_email" class="form-control" placeholder="E-mail*" required="required" value="{{form.email.value}}"	>
+			<input type="text" name="usuario" id="id_usuario" class="form-control" placeholder="Usuário *" required="required" value="{{form.usario.value}}">
+			<input type="text" name="nome" id="id_nome" class="form-control" placeholder="Nome *" required="required" value="{{form.nome.value}}">
+			<input type="password" name="senha" id="id_senha" class="form-control" placeholder="Senha *" required="required" value="{{form.senha.value}}">
+			<input type="text" name="telefone" id="id_telefone" class="form-control" placeholder="Telefone" value="{{form.telefone.value}}">
+			<input type="text" name="nome_empresa" id="id_nome_empresa" class="form-control" placeholder="Empresa" value="{{form.nome_empresa.value}}">
 
 			<hr>
-
+			{% if form.errors %}
+			    {% for field in form %}
+			        {% for error in field.errors %}
+			            <div class="alert alert-danger">
+			                <strong>{{field.placeholder}} - {{ error|escape }}</strong>
+			            </div>
+			        {% endfor %}
+			    {% endfor %}
+			    {% for error in form.non_field_errors %}
+			        <div class="alert alert-danger">
+			            <strong>{{ error|escape }}</strong>
+			        </div>
+			    {% endfor %}
+			{% endif %}
 			<button class="btn btn-primary btn-block" type="submit">Registrar</button>	
 		</form>
 	</div>
